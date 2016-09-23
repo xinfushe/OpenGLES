@@ -14,7 +14,9 @@ import java.nio.ShortBuffer;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
+ * 参考：
  * http://blog.csdn.net/nupt123456789/article/details/40375731
+ * http://blog.piasy.com/2016/06/07/Open-gl-es-android-2-part-1/
  * Created by Administrator on 2016/9/23.
  */
 /*
@@ -32,7 +34,7 @@ public class GLBitmap {
             // This matrix member variable (uMVPMatrix) provides a hook to manipulate the coordinates of the objects that use this vertex shader
             "uniform mat4 uMVPMatrix;" +
                     "attribute vec4 vPosition;" +
-                    "attribute vec2 a_texCoord;" +//传入
+                    "attribute vec2 a_texCoord;" +//外部传入
                     "varying vec2 v_texCoord;" +//传到片段着色器中
                     "void main() {" +
                     // the matrix must be included as a modifier of gl_Position
@@ -115,6 +117,7 @@ public class GLBitmap {
         GLES20.glAttachShader(mProgram, fragmentShader);
         // creates OpenGL ES program executables
         GLES20.glLinkProgram(mProgram);
+
     }
 
     /** The texture pointer */

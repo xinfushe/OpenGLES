@@ -18,7 +18,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Context context;
     private Triangle mTriangle;
     private Square mSquare;
-    private GLBitmap glBitmap;
+    private GLBitmap mGlBitmap;
 
     public volatile float mAngle;//由于渲染器代码运行在一个独立的线程中（非主UI线程），我们必须同时将该变量声明为volatile。
 
@@ -39,12 +39,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         // initialize a triangle
-//        mTriangle = new Triangle();
+        mTriangle = new Triangle();
         // initialize a square
-//        mSquare = new Square();
+        mSquare = new Square();
 
-        glBitmap=new GLBitmap();
-        glBitmap.loadGLTexture(unused, this.context);
+        mGlBitmap =new GLBitmap();
+        mGlBitmap.loadGLTexture(unused, this.context);
     }
     private float[] mRotationMatrix = new float[16];
 //每次重新绘制View时被调用。
@@ -77,11 +77,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // for the matrix multiplication product to be correct.
         Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
-        //mTriangle画图
-//        mTriangle.draw(scratch);
+        //画图
+
+        mGlBitmap.draw(scratch);
+
 //        mSquare.draw(scratch);
 
-        glBitmap.draw(scratch);
+//        mTriangle.draw(scratch);
     }
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"

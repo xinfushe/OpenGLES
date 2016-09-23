@@ -49,7 +49,7 @@ public class Triangle {
     };
 
     // Set color with red, green, blue and alpha (opacity) values
-    float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 1.0f };
+    float color[] = { 0.63671875f, 0.16953125f, 0.12265625f, 1.0f };
 
     //程式（Program）：一个OpenGL ES对象，包含了你希望用来绘制一个或更多图形所要用到的着色器。
     private final int mProgram;

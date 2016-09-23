@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class OpenGLES20Activity extends AppCompatActivity {
-
     private MyGLSurfaceView mGLView;
 
     @Override
