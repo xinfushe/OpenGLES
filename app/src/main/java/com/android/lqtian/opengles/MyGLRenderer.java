@@ -1,5 +1,6 @@
 package com.android.lqtian.opengles;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -14,8 +15,10 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by Administrator on 2016/9/13.
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
+    private Context context;
     private Triangle mTriangle;
     private Square mSquare;
+    private GLBitmap glBitmap;
 
     public volatile float mAngle;//由于渲染器代码运行在一个独立的线程中（非主UI线程），我们必须同时将该变量声明为volatile。
 
@@ -26,20 +29,27 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mAngle = angle;
     }
 
+    public MyGLRenderer(Context context) {
+        this.context = context;
+    }
+
     //调用一次，用来配置View的OpenGL ES环境。初始化使用
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         // initialize a triangle
-        mTriangle = new Triangle();
+//        mTriangle = new Triangle();
         // initialize a square
 //        mSquare = new Square();
+
+        glBitmap=new GLBitmap();
+        glBitmap.loadGLTexture(unused, this.context);
     }
     private float[] mRotationMatrix = new float[16];
 //每次重新绘制View时被调用。
     public void onDrawFrame(GL10 gl) {
-        float[] scratch = new float[16];//最终
+        float[] scratch = new float[16];//最终的矩阵
         // Redraw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
@@ -68,7 +78,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
         //mTriangle画图
-        mTriangle.draw(scratch);
+//        mTriangle.draw(scratch);
+//        mSquare.draw(scratch);
+
+        glBitmap.draw(scratch);
     }
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"

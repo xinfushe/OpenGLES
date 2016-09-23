@@ -30,7 +30,7 @@ public class OpenGLES20Activity extends AppCompatActivity {
             super(context);
             // Create an OpenGL ES 2.0 context
             setEGLContextClientVersion(2);
-            mRenderer = new MyGLRenderer();
+            mRenderer = new MyGLRenderer(getContext());
 
             // Set the Renderer for drawing on the GLSurfaceView
             setRenderer(mRenderer);
