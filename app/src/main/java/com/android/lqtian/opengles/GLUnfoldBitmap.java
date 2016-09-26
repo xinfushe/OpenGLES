@@ -20,7 +20,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by Administrator on 2016/9/23.
  */
 
-public class GLBitmap {
+public class GLUnfoldBitmap {
     //程式（Program）：一个OpenGL ES对象，包含了你希望用来绘制一个或更多图形所要用到的着色器。
     private final int mProgram;
 
@@ -31,11 +31,13 @@ public class GLBitmap {
                     "attribute vec4 vPosition;" +
                     "attribute vec2 a_texCoord;" +//外部传入
                     "varying vec2 v_texCoord;" +//传到片段着色器中
+                    "varying vec4 Position;" +//传到片段着色器中
                     "void main() {" +
                     // the matrix must be included as a modifier of gl_Position
                     // Note that the uMVPMatrix factor *must be first* in order for the matrix multiplication product to be correct.uMVPMatrix左乘才是对的
                     "  gl_Position = uMVPMatrix * vPosition;" +
                     "  v_texCoord = a_texCoord;" +
+                    "	Position = vPosition;" +
                     "}";
     // Use to access and set the view transformation 顶点着色器中的mMVPMatrix
     private int mMVPMatrixHandle;
@@ -47,8 +49,44 @@ public class GLBitmap {
             "precision mediump float;" +
                     "varying vec2 v_texCoord;" +
                     "uniform sampler2D s_texture;" +
+                    "varying vec4 Position;" +//从上方获取坐标
                     "void main() {" +
-                    "  gl_FragColor =texture2D( s_texture, v_texCoord );" +
+                    "float PI= 3.14159265359;" +
+                    "float F0 = 210.0 * PI /180.0;" +
+                    "float f = 0.5/2.0/sin(F0/4.0);" +
+                    "float R = 2.0* f * sin(PI/4.0);" +
+                    "float xp = Position.x;" +
+                    "float yp = Position.y;" +
+                    "float a=sqrt(xp*xp+yp*yp);" +
+                    "float fai=atan(yp,xp);" +
+                    "float cita=2.0*asin(a/2.0/f);" +
+                    "float x1=R*sin(cita)*cos(fai);" +
+                    "float y1=R*sin(cita)*sin(fai);" +
+                    "float z1=R*cos(cita);" +
+                    "float rotGamma=0.0;" +
+                    "rotGamma=-PI*rotGamma/180.0;" +
+                    "float x1pp=z1*sin(rotGamma)+x1*cos(rotGamma);" +
+                    "float y1pp=y1;" +
+                    "float z1pp=z1*cos(rotGamma)-x1*sin(rotGamma);" +
+                    "float rotSita=0.0;" +
+                    "rotSita=-PI*rotSita/180.0;" +
+                    "float x1p=x1pp;" +
+                    "float y1p=y1pp*cos(rotSita)-z1pp*sin(rotSita);" +
+                    "float z1p=y1pp*sin(rotSita)+z1pp*cos(rotSita);" +
+                    "float citaP=acos(z1p/R);" +
+                    "float faiP=atan(y1p/x1p);" +
+                    "float rotFai=0.0;" +
+                    "faiP+=PI* rotFai/180.0;" +
+                    "if(faiP<0.0)" +
+                    "faiP+=PI*2.0;" +
+                    "float u=R*faiP/PI;" +
+//                    "float u=0.5;" +
+//                    "float v=0.5;" +
+                    "float v=R*citaP/PI;" +
+                    "vec2 test;"+
+                    "test=vec2(u,v);"+
+                    "  gl_FragColor =texture2D( s_texture, test );" +
+//                    "  gl_FragColor =texture2D( s_texture, v_texCoord );" +
                     "}";
     private int mTexSamplerHandle;
 
@@ -78,7 +116,7 @@ public class GLBitmap {
     };
 
 
-    public GLBitmap() {
+    public GLUnfoldBitmap() {
         // initialize vertexBuffer
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertexes.length * 4);
         byteBuffer.order(ByteOrder.nativeOrder());

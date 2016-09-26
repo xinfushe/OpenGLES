@@ -19,6 +19,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Triangle mTriangle;
     private Square mSquare;
     private GLBitmap mGlBitmap;
+    private GLUnfoldBitmap mGLUnfoldBitmap;
 
     public volatile float mAngle;//由于渲染器代码运行在一个独立的线程中（非主UI线程），我们必须同时将该变量声明为volatile。
 
@@ -39,12 +40,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         // initialize a triangle
-        mTriangle = new Triangle();
+//        mTriangle = new Triangle();
         // initialize a square
-        mSquare = new Square();
+//        mSquare = new Square();
 
-        mGlBitmap =new GLBitmap();
-        mGlBitmap.loadGLTexture(unused, this.context);
+//        mGlBitmap =new GLBitmap();
+//        mGlBitmap.loadGLTexture(unused, this.context);
+
+        mGLUnfoldBitmap=new GLUnfoldBitmap();
+        mGLUnfoldBitmap.loadGLTexture(unused,this.context);
     }
     private float[] mRotationMatrix = new float[16];
 //每次重新绘制View时被调用。
@@ -79,7 +83,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         //画图
 
-        mGlBitmap.draw(scratch);
+        mGLUnfoldBitmap.draw(scratch);
+
+//        mGlBitmap.draw(scratch);
 
 //        mSquare.draw(scratch);
 
@@ -100,7 +106,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // 一个投影变换一般仅当OpenGL View的比例在渲染器的onSurfaceChanged()方法中建立或发生变化时才被计算。
         // 关于更多OpenGL ES投影和坐标映射的知识，可以阅读Mapping Coordinates for Drawn Objects。
         float ratio = (float) width / height;
-
+        Log.i("MyGLRenderer", ratio+"");//0.58536583  1.9104477
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
         Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);//视锥体  视景体的6个裁剪平面（左、右、底、顶、近和远）
