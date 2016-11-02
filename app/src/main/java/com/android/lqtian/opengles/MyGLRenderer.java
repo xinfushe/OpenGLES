@@ -105,11 +105,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //如果没有该计算，那么用OpenGL ES绘制的对象会由于其长宽比例和View窗口比例的不一致而发生形变。
         // 一个投影变换一般仅当OpenGL View的比例在渲染器的onSurfaceChanged()方法中建立或发生变化时才被计算。
         // 关于更多OpenGL ES投影和坐标映射的知识，可以阅读Mapping Coordinates for Drawn Objects。
-        float ratio = (float) width / height;
-        Log.i("MyGLRenderer", ratio+"");//0.58536583  1.9104477
+        float ratio = (float) width / height;//
+
+
+//        Log.i("MyGLRenderer", ratio+"");//0.58536583  1.9104477
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
-        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);//视锥体  视景体的6个裁剪平面（左、右、底、顶、近和远）
+        Matrix.frustumM(mProjectionMatrix, 0, -ratio , ratio , -1, 1, 3, 7);//视锥体  视景体的6个裁剪平面（左、右、底、顶、近和远）
     }
 
 

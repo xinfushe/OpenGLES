@@ -39,7 +39,7 @@ public class Triangle {
     static final int COORDS_PER_VERTEX = 3;
     //顶点数据
     private FloatBuffer vertexBuffer;
-    static float triangleCoords[] = {   // in counterclockwise order:      x y z三维坐标
+    static float triangleCoords[] = {   // in counterclockwise order:      x y z，随意的空间坐标？
 //            0.0f,  0.622008459f, 0.0f, // top
 //            -0.5f, -0.311004243f, 0.0f, // bottom left
 //            0.5f, -0.311004243f, 0.0f  // bottom right
